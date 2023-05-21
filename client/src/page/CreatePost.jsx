@@ -17,13 +17,16 @@ const CreatePost = () => {
   const [generatingImg, setGeneratingImg] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  //updates the form
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
+  //gets a prompt from constant and update the form
   const handleSurpriseMe = () => {
     const randomPrompt = getRandomPrompt(form.prompt);
     setForm({ ...form, prompt: randomPrompt });
   };
 
+  //generate image from dall-e api
   const generateImage = async () => {
     if (form.prompt) {
       try {
@@ -39,6 +42,7 @@ const CreatePost = () => {
         });
 
         const data = await response.json();
+        //add photo to form
         setForm({ ...form, photo: `data:image/jpeg;base64,${data.photo}` });
       } catch (err) {
         alert(err);
@@ -51,10 +55,12 @@ const CreatePost = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); //prevents page from refreshing
 
+    //if we have both prompt and photo
     if (form.prompt && form.photo) {
-      setLoading(true);
+      setLoading(true); //set loading until recieved
+      //send the whole form with photo to backend
       try {
         const response = await fetch('http://localhost:8080/api/v1/post', {
           method: 'POST',
@@ -64,9 +70,9 @@ const CreatePost = () => {
           body: JSON.stringify({ ...form }),
         });
 
-        await response.json();
+        await response.json(); //successfully saved
         alert('Success');
-        navigate('/');
+        navigate('/');  //then navigate to home
       } catch (err) {
         alert(err);
       } finally {
@@ -90,7 +96,7 @@ const CreatePost = () => {
             labelName="Your Name"
             type="text"
             name="name"
-            placeholder="Ex., john doe"
+            placeholder="Ex., John doe"
             value={form.name}
             handleChange={handleChange}
           />
@@ -107,6 +113,7 @@ const CreatePost = () => {
           />
 
           <div className="relative bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-64 p-3 h-64 flex justify-center items-center">
+            {/* Displays preview if image's not generated yet and displays the image if already generated*/}
             { form.photo ? (
               <img
                 src={form.photo}
@@ -120,7 +127,7 @@ const CreatePost = () => {
                 className="w-9/12 h-9/12 object-contain opacity-40"
               />
             )}
-
+            {/* if waiting for image to be generated display loading ring */}
             {generatingImg && (
               <div className="absolute inset-0 z-0 flex justify-center items-center bg-[rgba(0,0,0,0.5)] rounded-lg">
                 <Loader />

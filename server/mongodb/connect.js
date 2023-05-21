@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 
+//connects to MongoDB
 const connectDB = (url) => {
   mongoose.set('strictQuery', true);
   mongoose.connect(url)

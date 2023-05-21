@@ -10,12 +10,13 @@ const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-var openai = new OpenAIApi(configuration);
+const openai = new OpenAIApi(configuration);
 
 router.route('/').get((req, res) => {
   res.status(200).json({ message: 'Hello from DALL-E!' });
 });
 
+//gets the image request and generates the image and send back to frontend in response
 router.route('/').post(async (req, res) => {
   try {
     const { prompt } = req.body;
