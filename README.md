@@ -8,3 +8,5 @@ Users can share and download the images as well.
 MongoDB, Express, React, Node, Tailwind CSS, Cloudinary, OpenAI API
 
 Link: https://jay-dall-e.netlify.app/
+
+May take a while to load at first since the backend is hosted on render and the server goes to sleep if it doesn't get any requests for 15 mins.
